@@ -3,11 +3,11 @@ asd.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000120  00800100  000001fa  0000026e  2**0
+  0 .data         00000120  00800100  000001be  00000232  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000001fa  00000000  00000000  00000074  2**1
+  1 .text         000001be  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000011  00000000  00000000  0000038e  2**0
+  2 .comment      00000011  00000000  00000000  00000352  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .text:
@@ -52,7 +52,7 @@ Disassembly of section .text:
   74:	12 e0       	ldi	r17, 0x02	; 2
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ea ef       	ldi	r30, 0xFA	; 250
+  7a:	ee eb       	ldi	r30, 0xBE	; 190
   7c:	f1 e0       	ldi	r31, 0x01	; 1
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
@@ -61,7 +61,7 @@ Disassembly of section .text:
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
   8a:	0e 94 d6 00 	call	0x1ac	; 0x1ac <main>
-  8e:	0c 94 fb 00 	jmp	0x1f6	; 0x1f6 <_exit>
+  8e:	0c 94 dd 00 	jmp	0x1ba	; 0x1ba <_exit>
 
 00000092 <__bad_interrupt>:
   92:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -102,11 +102,11 @@ Disassembly of section .text:
 
 000000ce <TLC5940_Init>:
   ce:	20 9a       	sbi	0x04, 0	; 4
-  d0:	25 9a       	sbi	0x04, 5	; 4
-  d2:	54 9a       	sbi	0x0a, 4	; 10
-  d4:	57 9a       	sbi	0x0a, 7	; 10
+  d0:	22 9a       	sbi	0x04, 2	; 4
+  d2:	57 9a       	sbi	0x0a, 7	; 10
+  d4:	56 9a       	sbi	0x0a, 6	; 10
   d6:	21 9a       	sbi	0x04, 1	; 4
-  d8:	22 9a       	sbi	0x04, 2	; 4
+  d8:	25 9a       	sbi	0x04, 5	; 4
   da:	23 9a       	sbi	0x04, 3	; 4
   dc:	85 b1       	in	r24, 0x05	; 5
   de:	15 b8       	out	0x05, r1	; 5
@@ -114,15 +114,15 @@ Disassembly of section .text:
   e2:	15 b8       	out	0x05, r1	; 5
   e4:	8b b1       	in	r24, 0x0b	; 11
   e6:	1b b8       	out	0x0b, r1	; 11
-  e8:	5f 9a       	sbi	0x0b, 7	; 11
+  e8:	5e 9a       	sbi	0x0b, 6	; 11
   ea:	85 b1       	in	r24, 0x05	; 5
   ec:	15 b8       	out	0x05, r1	; 5
-  ee:	2a 9a       	sbi	0x05, 2	; 5
+  ee:	2d 9a       	sbi	0x05, 5	; 5
   f0:	08 95       	ret
 
 000000f2 <TLC5940_ClockInDC>:
-  f2:	5c 9a       	sbi	0x0b, 4	; 11
-  f4:	5f 9a       	sbi	0x0b, 7	; 11
+  f2:	5f 9a       	sbi	0x0b, 7	; 11
+  f4:	5e 9a       	sbi	0x0b, 6	; 11
   f6:	e0 ec       	ldi	r30, 0xC0	; 192
   f8:	f1 e0       	ldi	r31, 0x01	; 1
   fa:	81 91       	ld	r24, Z+
@@ -132,7 +132,7 @@ Disassembly of section .text:
  102:	02 c0       	rjmp	.+4      	; 0x108 <TLC5940_ClockInDC+0x16>
  104:	85 b1       	in	r24, 0x05	; 5
  106:	15 b8       	out	0x05, r1	; 5
- 108:	2d 9a       	sbi	0x05, 5	; 5
+ 108:	2a 9a       	sbi	0x05, 2	; 5
  10a:	85 b1       	in	r24, 0x05	; 5
  10c:	15 b8       	out	0x05, r1	; 5
  10e:	82 e0       	ldi	r24, 0x02	; 2
@@ -145,7 +145,7 @@ Disassembly of section .text:
  11c:	08 95       	ret
 
 0000011e <TLC5940_SetGS_And_GS_PWM>:
- 11e:	5f 9b       	sbis	0x0b, 7	; 11
+ 11e:	5e 9b       	sbis	0x0b, 6	; 11
  120:	04 c0       	rjmp	.+8      	; 0x12a <TLC5940_SetGS_And_GS_PWM+0xc>
  122:	8b b1       	in	r24, 0x0b	; 11
  124:	1b b8       	out	0x0b, r1	; 11
@@ -170,7 +170,7 @@ Disassembly of section .text:
  14a:	02 c0       	rjmp	.+4      	; 0x150 <TLC5940_SetGS_And_GS_PWM+0x32>
  14c:	45 b1       	in	r20, 0x05	; 5
  14e:	15 b8       	out	0x05, r1	; 5
- 150:	2d 9a       	sbi	0x05, 5	; 5
+ 150:	2a 9a       	sbi	0x05, 2	; 5
  152:	45 b1       	in	r20, 0x05	; 5
  154:	15 b8       	out	0x05, r1	; 5
  156:	2f 5f       	subi	r18, 0xFF	; 255
@@ -180,13 +180,13 @@ Disassembly of section .text:
  15e:	01 97       	sbiw	r24, 0x01	; 1
  160:	00 97       	sbiw	r24, 0x00	; 0
  162:	49 f7       	brne	.-46     	; 0x136 <TLC5940_SetGS_And_GS_PWM+0x18>
- 164:	2a 9a       	sbi	0x05, 2	; 5
+ 164:	2d 9a       	sbi	0x05, 5	; 5
  166:	29 9a       	sbi	0x05, 1	; 5
  168:	85 b1       	in	r24, 0x05	; 5
  16a:	15 b8       	out	0x05, r1	; 5
  16c:	33 23       	and	r19, r19
  16e:	21 f0       	breq	.+8      	; 0x178 <TLC5940_SetGS_And_GS_PWM+0x5a>
- 170:	2d 9a       	sbi	0x05, 5	; 5
+ 170:	2a 9a       	sbi	0x05, 2	; 5
  172:	85 b1       	in	r24, 0x05	; 5
  174:	15 b8       	out	0x05, r1	; 5
  176:	08 95       	ret
@@ -216,35 +216,13 @@ Disassembly of section .text:
  1aa:	08 95       	ret
 
 000001ac <main>:
- 1ac:	89 e1       	ldi	r24, 0x19	; 25
- 1ae:	90 e0       	ldi	r25, 0x00	; 0
- 1b0:	0e 94 bd 00 	call	0x17a	; 0x17a <USART_Init>
- 1b4:	78 94       	sei
- 1b6:	0e 94 5d 00 	call	0xba	; 0xba <InitSpi>
- 1ba:	24 9a       	sbi	0x04, 4	; 4
- 1bc:	80 91 b1 00 	lds	r24, 0x00B1
- 1c0:	81 60       	ori	r24, 0x01	; 1
- 1c2:	80 93 b1 00 	sts	0x00B1, r24
- 1c6:	80 91 b0 00 	lds	r24, 0x00B0
- 1ca:	82 60       	ori	r24, 0x02	; 2
- 1cc:	80 93 b0 00 	sts	0x00B0, r24
- 1d0:	80 91 b0 00 	lds	r24, 0x00B0
- 1d4:	80 61       	ori	r24, 0x10	; 16
- 1d6:	80 93 b0 00 	sts	0x00B0, r24
- 1da:	56 9a       	sbi	0x0a, 6	; 10
- 1dc:	55 9a       	sbi	0x0a, 5	; 10
- 1de:	0e 94 cf 00 	call	0x19e	; 0x19e <USART_Receive>
- 1e2:	c8 2f       	mov	r28, r24
- 1e4:	81 34       	cpi	r24, 0x41	; 65
- 1e6:	19 f4       	brne	.+6      	; 0x1ee <main+0x42>
- 1e8:	8f ef       	ldi	r24, 0xFF	; 255
- 1ea:	0e 94 56 00 	call	0xac	; 0xac <SendSpi>
- 1ee:	8c 2f       	mov	r24, r28
- 1f0:	0e 94 c8 00 	call	0x190	; 0x190 <USART_Transmit>
- 1f4:	f4 cf       	rjmp	.-24     	; 0x1de <main+0x32>
+ 1ac:	0e 94 67 00 	call	0xce	; 0xce <TLC5940_Init>
+ 1b0:	0e 94 79 00 	call	0xf2	; 0xf2 <TLC5940_ClockInDC>
+ 1b4:	0e 94 8f 00 	call	0x11e	; 0x11e <TLC5940_SetGS_And_GS_PWM>
+ 1b8:	fd cf       	rjmp	.-6      	; 0x1b4 <main+0x8>
 
-000001f6 <_exit>:
- 1f6:	f8 94       	cli
+000001ba <_exit>:
+ 1ba:	f8 94       	cli
 
-000001f8 <__stop_program>:
- 1f8:	ff cf       	rjmp	.-2      	; 0x1f8 <__stop_program>
+000001bc <__stop_program>:
+ 1bc:	ff cf       	rjmp	.-2      	; 0x1bc <__stop_program>

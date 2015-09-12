@@ -4,6 +4,7 @@
  *  Created on: 12-09-2015
  *      Author: MiCkl
  */
+
 #include <avr/io.h>
 
 
@@ -19,19 +20,19 @@
 
 #define SCLK_DDR DDRB
 #define SCLK_PORT PORTB
-#define SCLK_PIN PB5
+#define SCLK_PIN PB2
 
 #define BLANK_DDR DDRB
 #define BLANK_PORT PORTB
-#define BLANK_PIN PB2
+#define BLANK_PIN PB5
 
 #define DCPRG_DDR DDRD
 #define DCPRG_PORT PORTD
-#define DCPRG_PIN PD4
+#define DCPRG_PIN PD7
 
 #define VPRG_DDR DDRD
 #define VPRG_PORT PORTD
-#define VPRG_PIN PD7
+#define VPRG_PIN PD6
 
 #define XLAT_DDR DDRB
 #define XLAT_PORT PORTB
@@ -53,3 +54,12 @@
 } while (0)
 
 #define outputState(port, pin) ((port) & (1 << (pin)))
+
+void TLC5940_Init(void);
+
+void TLC5940_ClockInDC(void);
+
+void TLC5940_SetGS_And_GS_PWM(void);
+
+
+

@@ -20,45 +20,54 @@
 
 
 
+
+
 int main (void) {
 
-	USART_Init( MYUBRR ); // initialize USART
-	sei();
-	InitSpi();
+//	USART_Init( MYUBRR ); // initialize USART
+//	sei();
+//	InitSpi();
 
-	DDRB |= ( 1<<PB4 ); // VPROG
-
-	int a;
-
-	// CTC
-
-	TCCR2B |= ( 1 << CS20 );
-	TCCR2A |= ( 1 << WGM21 );
-	TCCR2A |= ( 1 << COM2B0 );
-	DDRD |= ( 1 << PD6 );
-	DDRD |= ( 1 << PD5 );
-
-	int b = 0;
+// CTC
+//	TCCR2B |= ( 1 << CS20 );
+//	TCCR2A |= ( 1 << WGM21 );
+//	TCCR2A |= ( 1 << COM2B0 );
+//	DDRD |= ( 1 << PD6 );
+//	DDRD |= ( 1 << PD5 );
+//
+//	int a;
+//
+//	int b = 0;
 
 
 
-	while (1)
-	{
+//	while (1)
+//	{
+//
+//		a = USART_Receive();
+//
+//		switch ( a )
+//		{
+//		case 0x41: 	SendSpi( 0xff );	break ;
+//		case 0x42: 		break ;
+//		case 0x43: 		break ;
+//		default: 			break ;
+//		}
+//
+//		USART_Transmit(a);
+//
+//
+//	}
 
-		a = USART_Receive();
+	TLC5940_Init();
+	TLC5940_ClockInDC();
 
-		switch ( a )
-		{
-		case 0x41: 	SendSpi( 0xff );	break ;
-		case 0x42: 		break ;
-		case 0x43: 		break ;
-		default: 			break ;
-		}
+	for (;;){
 
-		USART_Transmit(a);
-
+		TLC5940_SetGS_And_GS_PWM();
 
 	}
 
+	return 0;
 }
 
