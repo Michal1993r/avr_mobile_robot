@@ -10,6 +10,7 @@
 #include <util/delay.h>
 #include "UART.h"
 #include "SPI_SR.h"
+#include "TLC5940.h"
 
 #define left  	0b00000000
 #define right 	0b00000000

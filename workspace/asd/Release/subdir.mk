@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../SPI_SR.c \
+../TLC5940.c \
 ../UART.c \
 ../main.c 
 
 OBJS += \
 ./SPI_SR.o \
+./TLC5940.o \
 ./UART.o \
 ./main.o 
 
 C_DEPS += \
 ./SPI_SR.d \
+./TLC5940.d \
 ./UART.d \
 ./main.d 
 
