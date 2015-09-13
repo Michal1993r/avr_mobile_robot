@@ -62,6 +62,12 @@ void TLC5940_Init(void) {
 	setHigh(VPRG_PORT, VPRG_PIN);
 	setLow(XLAT_PORT, XLAT_PIN);
 	setHigh(BLANK_PORT, BLANK_PIN);
+
+	// CTC
+	TCCR0A = (1 << WGM01);
+	TCCR0B = ((1 << CS02) | (1 << CS00)); // prescaler
+	OCR0A = 3; // interrupt every 4096 cycles
+	TIMSK0 |= (1 << OCIE0A); // enable compare match
 }
 
 
@@ -127,3 +133,52 @@ void TLC5940_SetGS_And_GS_PWM(void) {
 		GSCLK_Counter++;
 	}
 }
+
+//ISR( TIMER0_COMPA_vect){
+//
+//	uint8_t firstCycleFlag = 0;
+//	static uint8_t xlatNeedsPulse = 0;
+//
+//	setHigh(BLANK_PORT, BLANK_PIN);
+//
+//	if (outputState(VPRG_PORT, VPRG_PIN)) {
+//
+//		setLow(VPRG_PORT, VPRG_PIN);
+//		firstCycleFlag = 1;
+//
+//	}
+//
+//	if (xlatNeedsPulse) {
+//
+//		pulse(XLAT_PORT, XLAT_PIN);
+//		xlatNeedsPulse = 0;
+//
+//	}
+//
+//	if (firstCycleFlag) pulse(SCLK_PORT, SCLK_PIN);
+//
+//	setLow(BLANK_PORT, BLANK_PIN);
+//
+//	uint8_t DataCounter = 0;
+//
+//	for(;;){
+//
+//		if (!(DataCounter > TLC5940_N * 192 - 1)){
+//
+//			if (gsData[DataCounter]) setHigh(SIN_PORT, SIN_PIN);
+//			else setLow(SIN_PORT, SIN_PIN);
+//
+//			pulse(SCLK_PORT, SCLK_PIN);
+//			DataCounter++;
+//
+//		}
+//
+//		else {
+//
+//			xlatNeedsPulse = 1;
+//			break;
+//
+//		}
+//
+//	}
+//}

@@ -18,28 +18,17 @@
 #define reverse 0b00000000
 #define Break	0b00000000
 
+ISR( TIMER0_COMPA_vect);
 
+extern uint8_t gsData[192 * TLC5940_N];
+extern uint8_t dcData[96 * TLC5940_N];
 
 
 
 int main (void) {
 
-//	USART_Init( MYUBRR ); // initialize USART
-//	sei();
-//	InitSpi();
-
-// CTC
-//	TCCR2B |= ( 1 << CS20 );
-//	TCCR2A |= ( 1 << WGM21 );
-//	TCCR2A |= ( 1 << COM2B0 );
-//	DDRD |= ( 1 << PD6 );
-//	DDRD |= ( 1 << PD5 );
-//
-//	int a;
-//
-//	int b = 0;
-
-
+	//USART_Init( MYUBRR ); // initialize USART
+	//InitSpi();
 
 //	while (1)
 //	{
@@ -61,13 +50,60 @@ int main (void) {
 
 	TLC5940_Init();
 	TLC5940_ClockInDC();
+	sei();
 
-	for (;;){
+	for(;;){};
 
-		TLC5940_SetGS_And_GS_PWM();
+
+	return 0;
+}
+
+ISR( TIMER0_COMPA_vect){
+
+	uint8_t firstCycleFlag = 0;
+	static uint8_t xlatNeedsPulse = 0;
+
+	setHigh(BLANK_PORT, BLANK_PIN);
+
+	if (outputState(VPRG_PORT, VPRG_PIN)) {
+
+		setLow(VPRG_PORT, VPRG_PIN);
+		firstCycleFlag = 1;
 
 	}
 
-	return 0;
+	if (xlatNeedsPulse) {
+
+		pulse(XLAT_PORT, XLAT_PIN);
+		xlatNeedsPulse = 0;
+
+	}
+
+	if (firstCycleFlag) pulse(SCLK_PORT, SCLK_PIN);
+
+	setLow(BLANK_PORT, BLANK_PIN);
+
+	uint8_t DataCounter = 0;
+
+	for(;;){
+
+		if (!(DataCounter > TLC5940_N * 192 - 1)){
+
+			if (gsData[DataCounter]) setHigh(SIN_PORT, SIN_PIN);
+			else setLow(SIN_PORT, SIN_PIN);
+
+			pulse(SCLK_PORT, SCLK_PIN);
+			DataCounter++;
+
+		}
+
+		else {
+
+			xlatNeedsPulse = 1;
+			break;
+
+		}
+
+	}
 }
 

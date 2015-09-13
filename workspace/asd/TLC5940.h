@@ -6,7 +6,7 @@
  */
 
 #include <avr/io.h>
-
+#include <avr/interrupt.h>
 
 // PIN CONFIG
 
@@ -38,7 +38,7 @@
 #define XLAT_PORT PORTB
 #define XLAT_PIN PB1
 
-#define TLC5940_N 1
+#define TLC5940_N 1 // number of chips
 
 // state macros
 
@@ -55,11 +55,16 @@
 
 #define outputState(port, pin) ((port) & (1 << (pin)))
 
-void TLC5940_Init(void);
+
+// Functions
+
+void TLC5940_Init(void); // initialize
 
 void TLC5940_ClockInDC(void);
 
 void TLC5940_SetGS_And_GS_PWM(void);
+
+//ISR( TIMER0_COMPA_vect);
 
 
 
