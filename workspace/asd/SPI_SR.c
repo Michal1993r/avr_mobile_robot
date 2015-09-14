@@ -1,7 +1,7 @@
 /*
  * SPI.c
  *
- *  Created on: 29 paŸ 2014
+ *  Created on: 29 paï¿½ 2014
  *      Author: MiCkl
  */
 
@@ -38,7 +38,7 @@ void SendSpi( uint8_t bajt ) {
 
 void InitSpi(void) {
 
-	DDRB |= MOSI|SCK|LT; // piny SPI jako wyjœcia
-	SPCR |= (1<<SPE)|(1<<MSTR); // w³¹cz SPI i ustaw Master
+	//DDRB |= MOSI|SCK|LT; // piny SPI jako wyjï¿½cia
+	SPCR |= (1<<SPE)|(1<<MSTR); // wï¿½ï¿½cz SPI i ustaw Master
 	SPSR |= (1<<SPI2X); // fosc/2
 }

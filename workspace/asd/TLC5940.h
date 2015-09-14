@@ -40,6 +40,21 @@
 
 #define TLC5940_N 1 // number of chips
 
+#if (12*TLC5940_N > 255)
+#define dcData_t uint16_t
+#else
+#define dcData_t uint8_t
+#endif
+
+#if (24*TLC5940_N > 255)
+#define gsData_t uint16_t
+#else
+#define gsData_t uint8_t
+#endif
+
+#define dcDataSize ((dcData_t)12 * TLC5940_N)
+#define gsDataSize ((gsData_t)24 * TLC5940_N)
+
 // state macros
 
 #define setOutput(ddr, pin) ((ddr) |= (1 << (pin)))
@@ -65,6 +80,7 @@ void TLC5940_ClockInDC(void);
 void TLC5940_SetGS_And_GS_PWM(void);
 
 //ISR( TIMER0_COMPA_vect);
+
 
 
 

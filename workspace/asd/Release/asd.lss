@@ -3,13 +3,13 @@ asd.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000120  00800100  0000025c  000002f0  2**0
+  0 .data         00000024  00800100  00000254  000002e8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000025c  00000000  00000000  00000094  2**1
+  1 .text         00000254  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000001  00800220  00800220  00000410  2**0
+  2 .bss          00000001  00800124  00800124  0000030c  2**0
                   ALLOC
-  3 .comment      00000011  00000000  00000000  00000410  2**0
+  3 .comment      00000011  00000000  00000000  0000030c  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .text:
@@ -29,7 +29,7 @@ Disassembly of section .text:
   2c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   30:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   34:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
-  38:	0c 94 ef 00 	jmp	0x1de	; 0x1de <__vector_14>
+  38:	0c 94 ed 00 	jmp	0x1da	; 0x1da <__vector_14>
   3c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   40:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   44:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
@@ -51,33 +51,33 @@ Disassembly of section .text:
   72:	cd bf       	out	0x3d, r28	; 61
 
 00000074 <__do_copy_data>:
-  74:	12 e0       	ldi	r17, 0x02	; 2
+  74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ec e5       	ldi	r30, 0x5C	; 92
+  7a:	e4 e5       	ldi	r30, 0x54	; 84
   7c:	f2 e0       	ldi	r31, 0x02	; 2
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	a0 32       	cpi	r26, 0x20	; 32
+  84:	a4 32       	cpi	r26, 0x24	; 36
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
 
 0000008a <__do_clear_bss>:
-  8a:	22 e0       	ldi	r18, 0x02	; 2
-  8c:	a0 e2       	ldi	r26, 0x20	; 32
-  8e:	b2 e0       	ldi	r27, 0x02	; 2
+  8a:	21 e0       	ldi	r18, 0x01	; 1
+  8c:	a4 e2       	ldi	r26, 0x24	; 36
+  8e:	b1 e0       	ldi	r27, 0x01	; 1
   90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
 
 00000092 <.do_clear_bss_loop>:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	a1 32       	cpi	r26, 0x21	; 33
+  94:	a5 32       	cpi	r26, 0x25	; 37
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
-  9a:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <main>
-  9e:	0c 94 2c 01 	jmp	0x258	; 0x258 <_exit>
+  9a:	0e 94 e7 00 	call	0x1ce	; 0x1ce <main>
+  9e:	0c 94 28 01 	jmp	0x250	; 0x250 <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -105,211 +105,205 @@ Disassembly of section .text:
   c8:	08 95       	ret
 
 000000ca <InitSpi>:
-  ca:	84 b1       	in	r24, 0x04	; 4
-  cc:	8e 60       	ori	r24, 0x0E	; 14
-  ce:	84 b9       	out	0x04, r24	; 4
-  d0:	8c b5       	in	r24, 0x2c	; 44
-  d2:	80 65       	ori	r24, 0x50	; 80
-  d4:	8c bd       	out	0x2c, r24	; 44
-  d6:	8d b5       	in	r24, 0x2d	; 45
-  d8:	81 60       	ori	r24, 0x01	; 1
-  da:	8d bd       	out	0x2d, r24	; 45
-  dc:	08 95       	ret
+  ca:	8c b5       	in	r24, 0x2c	; 44
+  cc:	80 65       	ori	r24, 0x50	; 80
+  ce:	8c bd       	out	0x2c, r24	; 44
+  d0:	8d b5       	in	r24, 0x2d	; 45
+  d2:	81 60       	ori	r24, 0x01	; 1
+  d4:	8d bd       	out	0x2d, r24	; 45
+  d6:	08 95       	ret
 
-000000de <TLC5940_Init>:
-  de:	20 9a       	sbi	0x04, 0	; 4
-  e0:	22 9a       	sbi	0x04, 2	; 4
-  e2:	57 9a       	sbi	0x0a, 7	; 10
-  e4:	56 9a       	sbi	0x0a, 6	; 10
-  e6:	21 9a       	sbi	0x04, 1	; 4
-  e8:	25 9a       	sbi	0x04, 5	; 4
-  ea:	23 9a       	sbi	0x04, 3	; 4
-  ec:	85 b1       	in	r24, 0x05	; 5
-  ee:	15 b8       	out	0x05, r1	; 5
-  f0:	85 b1       	in	r24, 0x05	; 5
-  f2:	15 b8       	out	0x05, r1	; 5
-  f4:	8b b1       	in	r24, 0x0b	; 11
-  f6:	1b b8       	out	0x0b, r1	; 11
-  f8:	5e 9a       	sbi	0x0b, 6	; 11
-  fa:	85 b1       	in	r24, 0x05	; 5
-  fc:	15 b8       	out	0x05, r1	; 5
-  fe:	2d 9a       	sbi	0x05, 5	; 5
- 100:	82 e0       	ldi	r24, 0x02	; 2
- 102:	84 bd       	out	0x24, r24	; 36
- 104:	85 e0       	ldi	r24, 0x05	; 5
- 106:	85 bd       	out	0x25, r24	; 37
- 108:	83 e0       	ldi	r24, 0x03	; 3
- 10a:	87 bd       	out	0x27, r24	; 39
- 10c:	ee e6       	ldi	r30, 0x6E	; 110
- 10e:	f0 e0       	ldi	r31, 0x00	; 0
- 110:	80 81       	ld	r24, Z
- 112:	82 60       	ori	r24, 0x02	; 2
- 114:	80 83       	st	Z, r24
- 116:	08 95       	ret
+000000d8 <TLC5940_Init>:
+  d8:	20 9a       	sbi	0x04, 0	; 4
+  da:	22 9a       	sbi	0x04, 2	; 4
+  dc:	57 9a       	sbi	0x0a, 7	; 10
+  de:	56 9a       	sbi	0x0a, 6	; 10
+  e0:	21 9a       	sbi	0x04, 1	; 4
+  e2:	25 9a       	sbi	0x04, 5	; 4
+  e4:	23 9a       	sbi	0x04, 3	; 4
+  e6:	85 b1       	in	r24, 0x05	; 5
+  e8:	15 b8       	out	0x05, r1	; 5
+  ea:	85 b1       	in	r24, 0x05	; 5
+  ec:	15 b8       	out	0x05, r1	; 5
+  ee:	8b b1       	in	r24, 0x0b	; 11
+  f0:	1b b8       	out	0x0b, r1	; 11
+  f2:	5e 9a       	sbi	0x0b, 6	; 11
+  f4:	85 b1       	in	r24, 0x05	; 5
+  f6:	15 b8       	out	0x05, r1	; 5
+  f8:	2d 9a       	sbi	0x05, 5	; 5
+  fa:	8c b5       	in	r24, 0x2c	; 44
+  fc:	80 65       	ori	r24, 0x50	; 80
+  fe:	8c bd       	out	0x2c, r24	; 44
+ 100:	8d b5       	in	r24, 0x2d	; 45
+ 102:	81 60       	ori	r24, 0x01	; 1
+ 104:	8d bd       	out	0x2d, r24	; 45
+ 106:	82 e0       	ldi	r24, 0x02	; 2
+ 108:	84 bd       	out	0x24, r24	; 36
+ 10a:	85 e0       	ldi	r24, 0x05	; 5
+ 10c:	85 bd       	out	0x25, r24	; 37
+ 10e:	83 e0       	ldi	r24, 0x03	; 3
+ 110:	87 bd       	out	0x27, r24	; 39
+ 112:	ee e6       	ldi	r30, 0x6E	; 110
+ 114:	f0 e0       	ldi	r31, 0x00	; 0
+ 116:	80 81       	ld	r24, Z
+ 118:	82 60       	ori	r24, 0x02	; 2
+ 11a:	80 83       	st	Z, r24
+ 11c:	08 95       	ret
 
-00000118 <TLC5940_ClockInDC>:
- 118:	5f 9a       	sbi	0x0b, 7	; 11
- 11a:	5e 9a       	sbi	0x0b, 6	; 11
- 11c:	e0 ec       	ldi	r30, 0xC0	; 192
- 11e:	f1 e0       	ldi	r31, 0x01	; 1
- 120:	81 91       	ld	r24, Z+
- 122:	88 23       	and	r24, r24
- 124:	11 f0       	breq	.+4      	; 0x12a <TLC5940_ClockInDC+0x12>
- 126:	2b 9a       	sbi	0x05, 3	; 5
- 128:	02 c0       	rjmp	.+4      	; 0x12e <TLC5940_ClockInDC+0x16>
- 12a:	85 b1       	in	r24, 0x05	; 5
- 12c:	15 b8       	out	0x05, r1	; 5
- 12e:	2a 9a       	sbi	0x05, 2	; 5
- 130:	85 b1       	in	r24, 0x05	; 5
- 132:	15 b8       	out	0x05, r1	; 5
- 134:	82 e0       	ldi	r24, 0x02	; 2
- 136:	e0 32       	cpi	r30, 0x20	; 32
- 138:	f8 07       	cpc	r31, r24
- 13a:	91 f7       	brne	.-28     	; 0x120 <TLC5940_ClockInDC+0x8>
- 13c:	29 9a       	sbi	0x05, 1	; 5
- 13e:	85 b1       	in	r24, 0x05	; 5
- 140:	15 b8       	out	0x05, r1	; 5
- 142:	08 95       	ret
+0000011e <TLC5940_ClockInDC>:
+ 11e:	5f 9a       	sbi	0x0b, 7	; 11
+ 120:	5e 9a       	sbi	0x0b, 6	; 11
+ 122:	e8 e1       	ldi	r30, 0x18	; 24
+ 124:	f1 e0       	ldi	r31, 0x01	; 1
+ 126:	81 91       	ld	r24, Z+
+ 128:	8e bd       	out	0x2e, r24	; 46
+ 12a:	0d b4       	in	r0, 0x2d	; 45
+ 12c:	07 fe       	sbrs	r0, 7
+ 12e:	fd cf       	rjmp	.-6      	; 0x12a <TLC5940_ClockInDC+0xc>
+ 130:	81 e0       	ldi	r24, 0x01	; 1
+ 132:	e4 32       	cpi	r30, 0x24	; 36
+ 134:	f8 07       	cpc	r31, r24
+ 136:	b9 f7       	brne	.-18     	; 0x126 <TLC5940_ClockInDC+0x8>
+ 138:	29 9a       	sbi	0x05, 1	; 5
+ 13a:	85 b1       	in	r24, 0x05	; 5
+ 13c:	15 b8       	out	0x05, r1	; 5
+ 13e:	08 95       	ret
 
-00000144 <TLC5940_SetGS_And_GS_PWM>:
- 144:	5e 9b       	sbis	0x0b, 6	; 11
- 146:	04 c0       	rjmp	.+8      	; 0x150 <TLC5940_SetGS_And_GS_PWM+0xc>
- 148:	8b b1       	in	r24, 0x0b	; 11
- 14a:	1b b8       	out	0x0b, r1	; 11
- 14c:	31 e0       	ldi	r19, 0x01	; 1
- 14e:	01 c0       	rjmp	.+2      	; 0x152 <TLC5940_SetGS_And_GS_PWM+0xe>
- 150:	30 e0       	ldi	r19, 0x00	; 0
- 152:	85 b1       	in	r24, 0x05	; 5
- 154:	15 b8       	out	0x05, r1	; 5
- 156:	80 e0       	ldi	r24, 0x00	; 0
- 158:	90 e1       	ldi	r25, 0x10	; 16
- 15a:	20 e0       	ldi	r18, 0x00	; 0
- 15c:	20 3c       	cpi	r18, 0xC0	; 192
- 15e:	78 f4       	brcc	.+30     	; 0x17e <TLC5940_SetGS_And_GS_PWM+0x3a>
- 160:	e2 2f       	mov	r30, r18
- 162:	f0 e0       	ldi	r31, 0x00	; 0
- 164:	e0 50       	subi	r30, 0x00	; 0
- 166:	ff 4f       	sbci	r31, 0xFF	; 255
- 168:	40 81       	ld	r20, Z
- 16a:	44 23       	and	r20, r20
- 16c:	11 f0       	breq	.+4      	; 0x172 <TLC5940_SetGS_And_GS_PWM+0x2e>
- 16e:	2b 9a       	sbi	0x05, 3	; 5
- 170:	02 c0       	rjmp	.+4      	; 0x176 <TLC5940_SetGS_And_GS_PWM+0x32>
- 172:	45 b1       	in	r20, 0x05	; 5
- 174:	15 b8       	out	0x05, r1	; 5
- 176:	2a 9a       	sbi	0x05, 2	; 5
- 178:	45 b1       	in	r20, 0x05	; 5
- 17a:	15 b8       	out	0x05, r1	; 5
- 17c:	2f 5f       	subi	r18, 0xFF	; 255
- 17e:	28 9a       	sbi	0x05, 0	; 5
- 180:	45 b1       	in	r20, 0x05	; 5
- 182:	15 b8       	out	0x05, r1	; 5
- 184:	01 97       	sbiw	r24, 0x01	; 1
- 186:	00 97       	sbiw	r24, 0x00	; 0
- 188:	49 f7       	brne	.-46     	; 0x15c <TLC5940_SetGS_And_GS_PWM+0x18>
- 18a:	2d 9a       	sbi	0x05, 5	; 5
- 18c:	29 9a       	sbi	0x05, 1	; 5
- 18e:	85 b1       	in	r24, 0x05	; 5
- 190:	15 b8       	out	0x05, r1	; 5
- 192:	33 23       	and	r19, r19
- 194:	21 f0       	breq	.+8      	; 0x19e <TLC5940_SetGS_And_GS_PWM+0x5a>
- 196:	2a 9a       	sbi	0x05, 2	; 5
- 198:	85 b1       	in	r24, 0x05	; 5
- 19a:	15 b8       	out	0x05, r1	; 5
- 19c:	08 95       	ret
- 19e:	08 95       	ret
+00000140 <TLC5940_SetGS_And_GS_PWM>:
+ 140:	5e 9b       	sbis	0x0b, 6	; 11
+ 142:	04 c0       	rjmp	.+8      	; 0x14c <TLC5940_SetGS_And_GS_PWM+0xc>
+ 144:	8b b1       	in	r24, 0x0b	; 11
+ 146:	1b b8       	out	0x0b, r1	; 11
+ 148:	31 e0       	ldi	r19, 0x01	; 1
+ 14a:	01 c0       	rjmp	.+2      	; 0x14e <TLC5940_SetGS_And_GS_PWM+0xe>
+ 14c:	30 e0       	ldi	r19, 0x00	; 0
+ 14e:	85 b1       	in	r24, 0x05	; 5
+ 150:	15 b8       	out	0x05, r1	; 5
+ 152:	80 e0       	ldi	r24, 0x00	; 0
+ 154:	90 e1       	ldi	r25, 0x10	; 16
+ 156:	20 e0       	ldi	r18, 0x00	; 0
+ 158:	20 3c       	cpi	r18, 0xC0	; 192
+ 15a:	78 f4       	brcc	.+30     	; 0x17a <TLC5940_SetGS_And_GS_PWM+0x3a>
+ 15c:	e2 2f       	mov	r30, r18
+ 15e:	f0 e0       	ldi	r31, 0x00	; 0
+ 160:	e0 50       	subi	r30, 0x00	; 0
+ 162:	ff 4f       	sbci	r31, 0xFF	; 255
+ 164:	40 81       	ld	r20, Z
+ 166:	44 23       	and	r20, r20
+ 168:	11 f0       	breq	.+4      	; 0x16e <TLC5940_SetGS_And_GS_PWM+0x2e>
+ 16a:	2b 9a       	sbi	0x05, 3	; 5
+ 16c:	02 c0       	rjmp	.+4      	; 0x172 <TLC5940_SetGS_And_GS_PWM+0x32>
+ 16e:	45 b1       	in	r20, 0x05	; 5
+ 170:	15 b8       	out	0x05, r1	; 5
+ 172:	2a 9a       	sbi	0x05, 2	; 5
+ 174:	45 b1       	in	r20, 0x05	; 5
+ 176:	15 b8       	out	0x05, r1	; 5
+ 178:	2f 5f       	subi	r18, 0xFF	; 255
+ 17a:	28 9a       	sbi	0x05, 0	; 5
+ 17c:	45 b1       	in	r20, 0x05	; 5
+ 17e:	15 b8       	out	0x05, r1	; 5
+ 180:	01 97       	sbiw	r24, 0x01	; 1
+ 182:	00 97       	sbiw	r24, 0x00	; 0
+ 184:	49 f7       	brne	.-46     	; 0x158 <TLC5940_SetGS_And_GS_PWM+0x18>
+ 186:	2d 9a       	sbi	0x05, 5	; 5
+ 188:	29 9a       	sbi	0x05, 1	; 5
+ 18a:	85 b1       	in	r24, 0x05	; 5
+ 18c:	15 b8       	out	0x05, r1	; 5
+ 18e:	33 23       	and	r19, r19
+ 190:	21 f0       	breq	.+8      	; 0x19a <TLC5940_SetGS_And_GS_PWM+0x5a>
+ 192:	2a 9a       	sbi	0x05, 2	; 5
+ 194:	85 b1       	in	r24, 0x05	; 5
+ 196:	15 b8       	out	0x05, r1	; 5
+ 198:	08 95       	ret
+ 19a:	08 95       	ret
 
-000001a0 <USART_Init>:
- 1a0:	90 93 c5 00 	sts	0x00C5, r25
- 1a4:	80 93 c4 00 	sts	0x00C4, r24
- 1a8:	88 e1       	ldi	r24, 0x18	; 24
- 1aa:	80 93 c1 00 	sts	0x00C1, r24
- 1ae:	8e e0       	ldi	r24, 0x0E	; 14
- 1b0:	80 93 c2 00 	sts	0x00C2, r24
- 1b4:	08 95       	ret
+0000019c <USART_Init>:
+ 19c:	90 93 c5 00 	sts	0x00C5, r25
+ 1a0:	80 93 c4 00 	sts	0x00C4, r24
+ 1a4:	88 e1       	ldi	r24, 0x18	; 24
+ 1a6:	80 93 c1 00 	sts	0x00C1, r24
+ 1aa:	8e e0       	ldi	r24, 0x0E	; 14
+ 1ac:	80 93 c2 00 	sts	0x00C2, r24
+ 1b0:	08 95       	ret
 
-000001b6 <USART_Transmit>:
- 1b6:	90 91 c0 00 	lds	r25, 0x00C0
- 1ba:	95 ff       	sbrs	r25, 5
- 1bc:	fc cf       	rjmp	.-8      	; 0x1b6 <USART_Transmit>
- 1be:	80 93 c6 00 	sts	0x00C6, r24
- 1c2:	08 95       	ret
+000001b2 <USART_Transmit>:
+ 1b2:	90 91 c0 00 	lds	r25, 0x00C0
+ 1b6:	95 ff       	sbrs	r25, 5
+ 1b8:	fc cf       	rjmp	.-8      	; 0x1b2 <USART_Transmit>
+ 1ba:	80 93 c6 00 	sts	0x00C6, r24
+ 1be:	08 95       	ret
 
-000001c4 <USART_Receive>:
- 1c4:	80 91 c0 00 	lds	r24, 0x00C0
- 1c8:	87 ff       	sbrs	r24, 7
- 1ca:	fc cf       	rjmp	.-8      	; 0x1c4 <USART_Receive>
- 1cc:	80 91 c6 00 	lds	r24, 0x00C6
- 1d0:	08 95       	ret
+000001c0 <USART_Receive>:
+ 1c0:	80 91 c0 00 	lds	r24, 0x00C0
+ 1c4:	87 ff       	sbrs	r24, 7
+ 1c6:	fc cf       	rjmp	.-8      	; 0x1c0 <USART_Receive>
+ 1c8:	80 91 c6 00 	lds	r24, 0x00C6
+ 1cc:	08 95       	ret
 
-000001d2 <main>:
- 1d2:	0e 94 6f 00 	call	0xde	; 0xde <TLC5940_Init>
- 1d6:	0e 94 8c 00 	call	0x118	; 0x118 <TLC5940_ClockInDC>
- 1da:	78 94       	sei
- 1dc:	ff cf       	rjmp	.-2      	; 0x1dc <main+0xa>
+000001ce <main>:
+ 1ce:	0e 94 6c 00 	call	0xd8	; 0xd8 <TLC5940_Init>
+ 1d2:	0e 94 8f 00 	call	0x11e	; 0x11e <TLC5940_ClockInDC>
+ 1d6:	78 94       	sei
+ 1d8:	ff cf       	rjmp	.-2      	; 0x1d8 <main+0xa>
 
-000001de <__vector_14>:
- 1de:	1f 92       	push	r1
+000001da <__vector_14>:
+ 1da:	1f 92       	push	r1
+ 1dc:	0f 92       	push	r0
+ 1de:	0f b6       	in	r0, 0x3f	; 63
  1e0:	0f 92       	push	r0
- 1e2:	0f b6       	in	r0, 0x3f	; 63
- 1e4:	0f 92       	push	r0
- 1e6:	11 24       	eor	r1, r1
- 1e8:	8f 93       	push	r24
- 1ea:	9f 93       	push	r25
- 1ec:	ef 93       	push	r30
- 1ee:	ff 93       	push	r31
- 1f0:	2d 9a       	sbi	0x05, 5	; 5
- 1f2:	5e 9b       	sbis	0x0b, 6	; 11
- 1f4:	04 c0       	rjmp	.+8      	; 0x1fe <__vector_14+0x20>
- 1f6:	8b b1       	in	r24, 0x0b	; 11
- 1f8:	1b b8       	out	0x0b, r1	; 11
- 1fa:	81 e0       	ldi	r24, 0x01	; 1
- 1fc:	01 c0       	rjmp	.+2      	; 0x200 <__vector_14+0x22>
- 1fe:	80 e0       	ldi	r24, 0x00	; 0
- 200:	90 91 20 02 	lds	r25, 0x0220
- 204:	99 23       	and	r25, r25
- 206:	29 f0       	breq	.+10     	; 0x212 <__vector_14+0x34>
- 208:	29 9a       	sbi	0x05, 1	; 5
- 20a:	95 b1       	in	r25, 0x05	; 5
- 20c:	15 b8       	out	0x05, r1	; 5
- 20e:	10 92 20 02 	sts	0x0220, r1
+ 1e2:	11 24       	eor	r1, r1
+ 1e4:	8f 93       	push	r24
+ 1e6:	ef 93       	push	r30
+ 1e8:	ff 93       	push	r31
+ 1ea:	2d 9a       	sbi	0x05, 5	; 5
+ 1ec:	5e 9b       	sbis	0x0b, 6	; 11
+ 1ee:	0f c0       	rjmp	.+30     	; 0x20e <__vector_14+0x34>
+ 1f0:	8b b1       	in	r24, 0x0b	; 11
+ 1f2:	1b b8       	out	0x0b, r1	; 11
+ 1f4:	80 91 24 01 	lds	r24, 0x0124
+ 1f8:	88 23       	and	r24, r24
+ 1fa:	29 f0       	breq	.+10     	; 0x206 <__vector_14+0x2c>
+ 1fc:	29 9a       	sbi	0x05, 1	; 5
+ 1fe:	85 b1       	in	r24, 0x05	; 5
+ 200:	15 b8       	out	0x05, r1	; 5
+ 202:	10 92 24 01 	sts	0x0124, r1
+ 206:	2a 9a       	sbi	0x05, 2	; 5
+ 208:	85 b1       	in	r24, 0x05	; 5
+ 20a:	15 b8       	out	0x05, r1	; 5
+ 20c:	09 c0       	rjmp	.+18     	; 0x220 <__vector_14+0x46>
+ 20e:	80 91 24 01 	lds	r24, 0x0124
  212:	88 23       	and	r24, r24
- 214:	19 f0       	breq	.+6      	; 0x21c <__vector_14+0x3e>
- 216:	2a 9a       	sbi	0x05, 2	; 5
+ 214:	29 f0       	breq	.+10     	; 0x220 <__vector_14+0x46>
+ 216:	29 9a       	sbi	0x05, 1	; 5
  218:	85 b1       	in	r24, 0x05	; 5
  21a:	15 b8       	out	0x05, r1	; 5
- 21c:	85 b1       	in	r24, 0x05	; 5
- 21e:	15 b8       	out	0x05, r1	; 5
- 220:	e0 e0       	ldi	r30, 0x00	; 0
- 222:	f1 e0       	ldi	r31, 0x01	; 1
- 224:	81 91       	ld	r24, Z+
- 226:	88 23       	and	r24, r24
- 228:	11 f0       	breq	.+4      	; 0x22e <__vector_14+0x50>
- 22a:	2b 9a       	sbi	0x05, 3	; 5
- 22c:	02 c0       	rjmp	.+4      	; 0x232 <__vector_14+0x54>
- 22e:	85 b1       	in	r24, 0x05	; 5
- 230:	15 b8       	out	0x05, r1	; 5
- 232:	2a 9a       	sbi	0x05, 2	; 5
- 234:	85 b1       	in	r24, 0x05	; 5
- 236:	15 b8       	out	0x05, r1	; 5
- 238:	81 e0       	ldi	r24, 0x01	; 1
- 23a:	e0 3c       	cpi	r30, 0xC0	; 192
- 23c:	f8 07       	cpc	r31, r24
- 23e:	91 f7       	brne	.-28     	; 0x224 <__vector_14+0x46>
- 240:	81 e0       	ldi	r24, 0x01	; 1
- 242:	80 93 20 02 	sts	0x0220, r24
- 246:	ff 91       	pop	r31
- 248:	ef 91       	pop	r30
- 24a:	9f 91       	pop	r25
- 24c:	8f 91       	pop	r24
- 24e:	0f 90       	pop	r0
- 250:	0f be       	out	0x3f, r0	; 63
- 252:	0f 90       	pop	r0
- 254:	1f 90       	pop	r1
- 256:	18 95       	reti
+ 21c:	10 92 24 01 	sts	0x0124, r1
+ 220:	85 b1       	in	r24, 0x05	; 5
+ 222:	15 b8       	out	0x05, r1	; 5
+ 224:	e0 e0       	ldi	r30, 0x00	; 0
+ 226:	f1 e0       	ldi	r31, 0x01	; 1
+ 228:	81 91       	ld	r24, Z+
+ 22a:	8e bd       	out	0x2e, r24	; 46
+ 22c:	0d b4       	in	r0, 0x2d	; 45
+ 22e:	07 fe       	sbrs	r0, 7
+ 230:	fd cf       	rjmp	.-6      	; 0x22c <__vector_14+0x52>
+ 232:	81 e0       	ldi	r24, 0x01	; 1
+ 234:	e8 31       	cpi	r30, 0x18	; 24
+ 236:	f8 07       	cpc	r31, r24
+ 238:	b9 f7       	brne	.-18     	; 0x228 <__vector_14+0x4e>
+ 23a:	81 e0       	ldi	r24, 0x01	; 1
+ 23c:	80 93 24 01 	sts	0x0124, r24
+ 240:	ff 91       	pop	r31
+ 242:	ef 91       	pop	r30
+ 244:	8f 91       	pop	r24
+ 246:	0f 90       	pop	r0
+ 248:	0f be       	out	0x3f, r0	; 63
+ 24a:	0f 90       	pop	r0
+ 24c:	1f 90       	pop	r1
+ 24e:	18 95       	reti
 
-00000258 <_exit>:
- 258:	f8 94       	cli
+00000250 <_exit>:
+ 250:	f8 94       	cli
 
-0000025a <__stop_program>:
- 25a:	ff cf       	rjmp	.-2      	; 0x25a <__stop_program>
+00000252 <__stop_program>:
+ 252:	ff cf       	rjmp	.-2      	; 0x252 <__stop_program>

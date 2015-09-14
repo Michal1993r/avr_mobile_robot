@@ -7,48 +7,60 @@
 
 #include "TLC5940.h"
 
-uint8_t dcData[96 * TLC5940_N] = {
-// MSB LSB
-1, 1, 1, 1, 1, 1, // Channel 15
-1, 1, 1, 1, 1, 1, // Channel 14
-1, 1, 1, 1, 1, 1, // Channel 13
-1, 1, 1, 1, 1, 1, // Channel 12
-1, 1, 1, 1, 1, 1, // Channel 11
-1, 1, 1, 1, 1, 1, // Channel 10
-1, 1, 1, 1, 1, 1, // Channel 9
-1, 1, 1, 1, 1, 1, // Channel 8
-1, 1, 1, 1, 1, 1, // Channel 7
-1, 1, 1, 1, 1, 1, // Channel 6
-1, 1, 1, 1, 1, 1, // Channel 5
-1, 1, 1, 1, 1, 1, // Channel 4
-1, 1, 1, 1, 1, 1, // Channel 3
-1, 1, 1, 1, 1, 1, // Channel 2
-1, 1, 1, 1, 1, 1, // Channel 1
-1, 1, 1, 1, 1, 1, // Channel 0
+uint8_t dcData[12 * TLC5940_N] = {
+
+		// MSB LSB
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+
 };
 
-uint8_t gsData[192 * TLC5940_N] = {
-// MSB LSB
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 15
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 14
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 13
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, // Channel 12
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, // Channel 11
-0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, // Channel 10
-0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, // Channel 9
-0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, // Channel 8
-0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, // Channel 7
-0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, // Channel 6
-0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, // Channel 5
-0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 4
-0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 3
-0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 2
-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // Channel 1
-1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Channel 0
+uint8_t gsData[24 * TLC5940_N] = {
+
+		// MSB LSB
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b11111111,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+
+
+
+
 };
 
 
 void TLC5940_Init(void) {
+
 	setOutput(GSCLK_DDR, GSCLK_PIN);
 	setOutput(SCLK_DDR, SCLK_PIN);
 	setOutput(DCPRG_DDR, DCPRG_PIN);
@@ -63,6 +75,9 @@ void TLC5940_Init(void) {
 	setLow(XLAT_PORT, XLAT_PIN);
 	setHigh(BLANK_PORT, BLANK_PIN);
 
+	SPCR |= (1<<SPE)|(1<<MSTR); // SPI initiate
+	SPSR |= (1<<SPI2X); // fosc/2
+
 	// CTC
 	TCCR0A = (1 << WGM01);
 	TCCR0B = ((1 << CS02) | (1 << CS00)); // prescaler
@@ -76,27 +91,16 @@ void TLC5940_ClockInDC(void) {
 	setHigh(DCPRG_PORT, DCPRG_PIN);
 	setHigh(VPRG_PORT, VPRG_PIN);
 
-	uint8_t Counter = 0;
+	for (dcData_t i=0; i < dcDataSize; i++){
 
-	for (;;) {
+		SPDR = dcData[i]; // start SPI transmission
 
-		if (Counter > TLC5940_N * 96 - 1)
- 		{
-			pulse(XLAT_PORT, XLAT_PIN);
-			break;
-		}
+		while (!( SPSR & ( 1 << SPIF )));
 
-		else {
-
-			if (dcData[Counter])
-				setHigh(SIN_PORT, SIN_PIN);
-			else
-				setLow(SIN_PORT, SIN_PIN);
-
-			pulse(SCLK_PORT, SCLK_PIN);
-			Counter++;
-		}
 	}
+
+	pulse( XLAT_PORT, XLAT_PIN );
+
 }
 
 
@@ -133,52 +137,3 @@ void TLC5940_SetGS_And_GS_PWM(void) {
 		GSCLK_Counter++;
 	}
 }
-
-//ISR( TIMER0_COMPA_vect){
-//
-//	uint8_t firstCycleFlag = 0;
-//	static uint8_t xlatNeedsPulse = 0;
-//
-//	setHigh(BLANK_PORT, BLANK_PIN);
-//
-//	if (outputState(VPRG_PORT, VPRG_PIN)) {
-//
-//		setLow(VPRG_PORT, VPRG_PIN);
-//		firstCycleFlag = 1;
-//
-//	}
-//
-//	if (xlatNeedsPulse) {
-//
-//		pulse(XLAT_PORT, XLAT_PIN);
-//		xlatNeedsPulse = 0;
-//
-//	}
-//
-//	if (firstCycleFlag) pulse(SCLK_PORT, SCLK_PIN);
-//
-//	setLow(BLANK_PORT, BLANK_PIN);
-//
-//	uint8_t DataCounter = 0;
-//
-//	for(;;){
-//
-//		if (!(DataCounter > TLC5940_N * 192 - 1)){
-//
-//			if (gsData[DataCounter]) setHigh(SIN_PORT, SIN_PIN);
-//			else setLow(SIN_PORT, SIN_PIN);
-//
-//			pulse(SCLK_PORT, SCLK_PIN);
-//			DataCounter++;
-//
-//		}
-//
-//		else {
-//
-//			xlatNeedsPulse = 1;
-//			break;
-//
-//		}
-//
-//	}
-//}
