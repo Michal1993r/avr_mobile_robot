@@ -7,57 +7,11 @@
 
 #include "TLC5940.h"
 
-uint8_t dcData[12 * TLC5940_N] = {
+uint8_t dcData[dcDataSize];
 
-		// MSB LSB
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
+uint8_t gsData[gsDataSize];
 
-};
-
-uint8_t gsData[24 * TLC5940_N] = {
-
-		// MSB LSB
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b11111111,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-
-
-
-
-};
-
+volatile uint8_t gsUpdateFlag;
 
 void TLC5940_Init(void) {
 
@@ -84,8 +38,6 @@ void TLC5940_Init(void) {
 	OCR0A = 3; // interrupt every 4096 cycles
 	TIMSK0 |= (1 << OCIE0A); // enable compare match
 }
-
-
 void TLC5940_ClockInDC(void) {
 
 	setHigh(DCPRG_PORT, DCPRG_PIN);
@@ -102,7 +54,6 @@ void TLC5940_ClockInDC(void) {
 	pulse( XLAT_PORT, XLAT_PIN );
 
 }
-
 
 void TLC5940_SetGS_And_GS_PWM(void) {
 	uint8_t firstCycleFlag = 0;
@@ -136,4 +87,89 @@ void TLC5940_SetGS_And_GS_PWM(void) {
 		pulse(GSCLK_PORT, GSCLK_PIN);
 		GSCLK_Counter++;
 	}
+}
+
+void TLC5940_SetAllGS (uint16_t value) {
+
+	uint8_t tmp1 = (value >> 4);
+	uint8_t tmp2 = (uint8_t)(value << 4) | (tmp1 >> 4);
+	gsData_t i = 0;
+
+	do {
+
+		gsData[i++] = tmp1;				// bits: 11 10 09 08 07 06 05 04
+		gsData[i++] = tmp2;				// bits: 03 02 01 00 11 10 09 08
+		gsData[i++] = (uint8_t)value;	// bits: 07 06 05 04 03 02 01 00
+
+	} while (i < gsDataSize);
+
+}
+
+void TLC5940_SetAllDC (uint8_t value){
+
+	uint8_t tmp1 = (uint8_t)(value << 2);
+	uint8_t tmp2 = (uint8_t)(tmp1 << 2);
+	uint8_t tmp3 = (uint8_t)(tmp2 << 2);
+	tmp1 |= (value >> 4);
+	tmp2 |= (value >> 2);
+	tmp3 |= value;
+	dcData_t i = 0;
+
+	do {
+
+		dcData[i++] = tmp1;				// bits: 05 04 03 02 01 00 05 04
+		dcData[i++] = tmp2;				// bits: 03 02 01 00 05 04 03 02
+		dcData[i++] = tmp3;	// bits: 01 00 05 04 03 02 01 00
+
+	} while (i < dcDataSize);
+
+}
+
+void TLC5940_SetGS(channel_t channel, uint16_t value){
+
+	channel = numChannels - 1 - channel;
+	uint16_t i = (uint16_t)channel * 3 / 2;
+
+	switch (channel % 2) {
+		case 0:
+			gsData[i] = (value >> 4);
+			i++;
+			gsData[i] = (gsData[i] & 0x0F) | (uint8_t)(value << 4);
+			break;
+		default:
+			gsData[i] = (gsData[i] & 0xF0) | (value >> 8);
+			i++;
+			gsData[i] = (uint8_t)value;
+			break;
+	}
+
+}
+
+void TLC5940_SetDC(channel_t channel, uint16_t value){
+
+	channel = numChannels - 1 - channel;
+	uint16_t i = (uint16_t)channel * 3 / 4;
+
+	switch (channel % 4) {
+		case 0:
+			dcData[i] = (dcData[i] & 0x03) | (uint8_t)(value << 2);
+			break;
+
+		case 1:
+			dcData[i] = (dcData[i] & 0xFC) | (uint8_t)(value >> 4);
+			i++;
+			dcData[i] = (dcData[i] & 0x0F) | (uint8_t)(value << 4);
+			break;
+
+		case 2:
+			dcData[i] = (dcData[i] & 0xF0) | (uint8_t)(value >> 2);
+			i++;
+			dcData[i] = (dcData[i] & 0x3F) | (uint8_t)(value << 6);
+			break;
+
+		default:
+			dcData[i] = (dcData[i] & 0xC0) | (uint8_t)(value);
+			break;
+	}
+
 }

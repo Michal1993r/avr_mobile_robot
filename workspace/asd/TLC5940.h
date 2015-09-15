@@ -55,6 +55,14 @@
 #define dcDataSize ((dcData_t)12 * TLC5940_N)
 #define gsDataSize ((gsData_t)24 * TLC5940_N)
 
+#if (16 * TLC5940_N > 255)
+#define channel_t uint16_t
+#else
+#define channel_t uint8_t
+#endif
+
+#define numChannels ((channel_t)16 * TLC5940_N)
+
 // state macros
 
 #define setOutput(ddr, pin) ((ddr) |= (1 << (pin)))
@@ -79,7 +87,15 @@ void TLC5940_ClockInDC(void);
 
 void TLC5940_SetGS_And_GS_PWM(void);
 
-//ISR( TIMER0_COMPA_vect);
+void TLC5940_SetAllGS (uint16_t);
+
+void TLC5940_SetAllDC (uint8_t);
+
+void TLC5940_SetGS(channel_t, uint16_t);
+
+void TLC5940_SetDC(channel_t, uint16_t);
+
+
 
 
 
