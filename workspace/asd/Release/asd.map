@@ -128,7 +128,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x3da
+.text           0x00000000      0x3ce
  *(.vectors)
  .vectors       0x00000000       0x68 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr5/crtm328p.o
                 0x00000000                __vectors
@@ -244,52 +244,52 @@ END GROUP
  .text.TLC5940_SetDC
                 0x0000025a       0x84 ./TLC5940.o
                 0x0000025a                TLC5940_SetDC
- .text.USART_Init
-                0x000002de       0x16 ./UART.o
-                0x000002de                USART_Init
- .text.USART_Transmit
-                0x000002f4        0xe ./UART.o
-                0x000002f4                USART_Transmit
- .text.USART_Receive
-                0x00000302        0xe ./UART.o
-                0x00000302                USART_Receive
- .text.startup.main
-                0x00000310       0x42 ./main.o
-                0x00000310                main
  .text.__vector_14
-                0x00000352       0x84 ./main.o
-                0x00000352                __vector_14
+                0x000002de       0x82 ./TLC5940.o
+                0x000002de                __vector_14
+ .text.USART_Init
+                0x00000360       0x16 ./UART.o
+                0x00000360                USART_Init
+ .text.USART_Transmit
+                0x00000376        0xe ./UART.o
+                0x00000376                USART_Transmit
+ .text.USART_Receive
+                0x00000384        0xe ./UART.o
+                0x00000384                USART_Receive
+ .text.startup.main
+                0x00000392       0x38 ./main.o
+                0x00000392                main
  .text.libgcc.mul
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.div
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc   0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.prologue
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.builtins
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fmul
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
-                0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
-                0x000003d6                . = ALIGN (0x2)
+                0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x000003ca                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000003d6        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
-                0x000003d6                exit
-                0x000003d6                _exit
+ .fini9         0x000003ca        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x000003ca                exit
+                0x000003ca                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -308,11 +308,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000003d6        0x4 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+ .fini0         0x000003ca        0x4 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x000003da                _etext = .
+                0x000003ce                _etext = .
 
-.data           0x00800100        0x0 load address 0x000003da
+.data           0x00800100        0x0 load address 0x000003ce
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr5/crtm328p.o
@@ -341,16 +341,16 @@ END GROUP
  .bss           0x00800100        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .bss           0x00800100        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  *(.bss*)
- .bss.xlatNeedsPulse.1633
-                0x00800100        0x1 ./main.o
+ .bss.xlatNeedsPulse.1550
+                0x00800100        0x1 ./TLC5940.o
  *(COMMON)
  COMMON         0x00800101       0x25 ./TLC5940.o
                 0x00800101                gsUpdateFlag
                 0x00800102                dcData
                 0x0080010e                gsData
                 0x00800126                PROVIDE (__bss_end, .)
-                0x000003da                __data_load_start = LOADADDR (.data)
-                0x000003da                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000003ce                __data_load_start = LOADADDR (.data)
+                0x000003ce                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800126        0x0
                 0x00800126                PROVIDE (__noinit_start, .)

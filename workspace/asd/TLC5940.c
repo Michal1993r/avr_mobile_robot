@@ -5,6 +5,7 @@
  *      Author: MiCkl
  */
 
+#include <avr/interrupt.h>
 #include "TLC5940.h"
 
 uint8_t dcData[dcDataSize];
@@ -97,9 +98,9 @@ void TLC5940_SetAllGS (uint16_t value) {
 
 	do {
 
-		gsData[i++] = tmp1;				// bits: 11 10 09 08 07 06 05 04
-		gsData[i++] = tmp2;				// bits: 03 02 01 00 11 10 09 08
-		gsData[i++] = (uint8_t)value;	// bits: 07 06 05 04 03 02 01 00
+		gsData[i++] = tmp1;	// bits: 11 10 09 08 07 06 05 04
+		gsData[i++] = tmp2;	// bits: 03 02 01 00 11 10 09 08
+		gsData[i++] = (uint8_t)value;// bits: 07 06 05 04 03 02 01 00
 
 	} while (i < gsDataSize);
 
@@ -117,8 +118,8 @@ void TLC5940_SetAllDC (uint8_t value){
 
 	do {
 
-		dcData[i++] = tmp1;				// bits: 05 04 03 02 01 00 05 04
-		dcData[i++] = tmp2;				// bits: 03 02 01 00 05 04 03 02
+		dcData[i++] = tmp1;	// bits: 05 04 03 02 01 00 05 04
+		dcData[i++] = tmp2;	// bits: 03 02 01 00 05 04 03 02
 		dcData[i++] = tmp3;	// bits: 01 00 05 04 03 02 01 00
 
 	} while (i < dcDataSize);
@@ -156,20 +157,48 @@ void TLC5940_SetDC(channel_t channel, uint16_t value){
 			break;
 
 		case 1:
-			dcData[i] = (dcData[i] & 0xFC) | (uint8_t)(value >> 4);
+			dcData[i] = (dcData[i] & 0xFC) | (value >> 4);
 			i++;
 			dcData[i] = (dcData[i] & 0x0F) | (uint8_t)(value << 4);
 			break;
 
 		case 2:
-			dcData[i] = (dcData[i] & 0xF0) | (uint8_t)(value >> 2);
+			dcData[i] = (dcData[i] & 0xF0) | (value >> 2);
 			i++;
 			dcData[i] = (dcData[i] & 0x3F) | (uint8_t)(value << 6);
 			break;
 
 		default:
-			dcData[i] = (dcData[i] & 0xC0) | (uint8_t)(value);
+			dcData[i] = (dcData[i] & 0xC0) | (value);
 			break;
 	}
 
+}
+
+// This interrupt will get called every 4096 clock cycles
+ISR(TIMER0_COMPA_vect) {
+	static uint8_t xlatNeedsPulse = 0;
+	setHigh(BLANK_PORT, BLANK_PIN);
+	if (outputState(VPRG_PORT, VPRG_PIN)) {
+		setLow(VPRG_PORT, VPRG_PIN);
+		if (xlatNeedsPulse) {
+			pulse(XLAT_PORT, XLAT_PIN);
+			xlatNeedsPulse = 0;
+		}
+		pulse(SCLK_PORT, SCLK_PIN);
+	} else if (xlatNeedsPulse) {
+		pulse(XLAT_PORT, XLAT_PIN);
+		xlatNeedsPulse = 0;
+	}
+	setLow(BLANK_PORT, BLANK_PIN);
+
+// Below this we have 4096 cycles to shift in the data for the next cycle
+	if (gsUpdateFlag) {
+		for (gsData_t i = 0; i < gsDataSize; i++) {
+		SPDR = gsData[i];
+		while (!(SPSR & (1 << SPIF)));
+		}
+	xlatNeedsPulse = 1;
+	gsUpdateFlag = 0;
+	}
 }

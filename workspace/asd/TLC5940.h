@@ -63,6 +63,12 @@
 
 #define numChannels ((channel_t)16 * TLC5940_N)
 
+// external variables
+
+extern uint8_t dcData[dcDataSize];
+extern uint8_t gsData[gsDataSize];
+extern volatile uint8_t gsUpdateFlag;
+
 // state macros
 
 #define setOutput(ddr, pin) ((ddr) |= (1 << (pin)))
@@ -95,7 +101,10 @@ void TLC5940_SetGS(channel_t, uint16_t);
 
 void TLC5940_SetDC(channel_t, uint16_t);
 
-
+static inline void TLC5940_SetGSUpdateFlag(void) {
+__asm__ volatile ("" ::: "memory");
+gsUpdateFlag = 1;
+}
 
 
 
