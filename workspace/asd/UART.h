@@ -11,7 +11,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define FOSC 8000000 // Clock Speed
+#define FOSC 16000000 // Clock Speed
 #define BAUD 19200
 #define MYUBRR FOSC/16/BAUD-1
 

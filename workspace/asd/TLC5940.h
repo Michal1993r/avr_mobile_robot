@@ -20,19 +20,19 @@
 
 #define SCLK_DDR DDRB
 #define SCLK_PORT PORTB
-#define SCLK_PIN PB2
+#define SCLK_PIN PB5
 
 #define BLANK_DDR DDRB
 #define BLANK_PORT PORTB
-#define BLANK_PIN PB5
+#define BLANK_PIN PB2
 
 #define DCPRG_DDR DDRD
 #define DCPRG_PORT PORTD
-#define DCPRG_PIN PD7
+#define DCPRG_PIN PD6
 
 #define VPRG_DDR DDRD
 #define VPRG_PORT PORTD
-#define VPRG_PIN PD6
+#define VPRG_PIN PD7
 
 #define XLAT_DDR DDRB
 #define XLAT_PORT PORTB
