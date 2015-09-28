@@ -11,35 +11,60 @@
 #include "UART.h"
 #include "TLC5940.h"
 
+// macros defining output states
+
 #define forward( velocity ) while(gsUpdateFlag); \
 				TLC5940_SetGS(1, velocity); \
 				TLC5940_SetGS(2, 0); \
+				TLC5940_SetGS(3, velocity); \
+				TLC5940_SetGS(4, 0); \
+				TLC5940_SetGS(11, velocity); \
+				TLC5940_SetGS(12, 0); \
+				TLC5940_SetGS(13, velocity); \
+				TLC5940_SetGS(14, 0); \
 				TLC5940_SetGSUpdateFlag();
 
 #define reverse( velocity ) while(gsUpdateFlag); \
-				TLC5940_SetGS(1, 0); \
 				TLC5940_SetGS(2, velocity); \
+				TLC5940_SetGS(1, 0); \
+				TLC5940_SetGS(4, velocity); \
+				TLC5940_SetGS(3, 0); \
+				TLC5940_SetGS(12, velocity); \
+				TLC5940_SetGS(11, 0); \
+				TLC5940_SetGS(14, velocity); \
+				TLC5940_SetGS(13, 0); \
 				TLC5940_SetGSUpdateFlag();
 
 #define left( velocity ) while(gsUpdateFlag); \
-				TLC5940_SetGS(1, velocity); \
-				TLC5940_SetGS(2, 0); \
+				TLC5940_SetGS(3, velocity); \
+				TLC5940_SetGS(1, 0); \
+				TLC5940_SetGS(2, velocity); \
+				TLC5940_SetGS(4, 0); \
+				TLC5940_SetGS(11, 0); \
+				TLC5940_SetGS(12, velocity); \
+				TLC5940_SetGS(13, velocity); \
+				TLC5940_SetGS(14, 0); \
 				TLC5940_SetGSUpdateFlag();
 
 #define right( velocity ) while(gsUpdateFlag); \
 				TLC5940_SetGS(1, velocity); \
 				TLC5940_SetGS(2, 0); \
+				TLC5940_SetGS(4, velocity); \
+				TLC5940_SetGS(3, 0); \
+				TLC5940_SetGS(11, velocity); \
+				TLC5940_SetGS(12, 0); \
+				TLC5940_SetGS(13, 0); \
+				TLC5940_SetGS(14, velocity); \
 				TLC5940_SetGSUpdateFlag();
 
 #define breaks	while(gsUpdateFlag); \
-				TLC5940_SetGS(1, 4095); \
-				TLC5940_SetGS(2, 4095); \
+				TLC5940_SetAllGS(3500); \
 				TLC5940_SetGSUpdateFlag();
 
 #define coast	while(gsUpdateFlag); \
-				TLC5940_SetGS(1, 0); \
-				TLC5940_SetGS(2, 0); \
+				TLC5940_SetAllGS(0); \
 				TLC5940_SetGSUpdateFlag();
+
 
 void apply(char, int*); 		// Function applies change of velocity
 
@@ -52,8 +77,11 @@ int main (void) {
 
 	sei();						// 	Enable Interrupts
 
+	while(gsUpdateFlag);
+	TLC5940_SetGSUpdateFlag();
+
 	int a;
-	int b = 2400;				// 	Set default velocity ( 0 - 4095 )
+	int b = 2500;				// 	Set default velocity ( 0 - 4095 )
 	char direction;				//	Support variable for the "apply" function,
 	int* c = &b;				// 	Pointer used for changing velocity inside main loop
 
@@ -119,6 +147,8 @@ int main (void) {
 			break ;
 		}
 
+
+
 		USART_Transmit(a);
 
 
@@ -140,9 +170,15 @@ void apply( char c, int* p ){
 
 		case 'l':
 
+				if ( *p > 4095 ) *p = 4095;
+				left( *p );
+
 			break;
 
 		case 'r':
+
+				if ( *p > 4095 ) *p = 4095;
+				right( *p );
 
 			break;
 
@@ -152,9 +188,12 @@ void apply( char c, int* p ){
 				reverse( *p );
 
 			break;
+
+		default :
+
+				if ( *p > 4095 ) *p = 4095;
+				coast;
 	}
 
 
 }
-
-

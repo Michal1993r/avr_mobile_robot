@@ -28,7 +28,6 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr5/crtm328p.o
-LOAD ./SPI_SR.o
 LOAD ./TLC5940.o
 LOAD ./UART.o
 LOAD ./main.o
@@ -128,7 +127,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x55a
+.text           0x00000000      0x76c
  *(.vectors)
  .vectors       0x00000000       0x68 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr5/crtm328p.o
                 0x00000000                __vectors
@@ -208,7 +207,6 @@ END GROUP
                 0x0000008c                __vector_16
                 0x0000008c                __vector_18
                 0x0000008c                __vector_20
- .text          0x00000090        0x0 ./SPI_SR.o
  .text          0x00000090        0x0 ./TLC5940.o
  .text          0x00000090        0x0 ./UART.o
  .text          0x00000090        0x0 ./main.o
@@ -216,82 +214,75 @@ END GROUP
  .text          0x00000090        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
                 0x00000090                . = ALIGN (0x2)
  *(.text.*)
- .text.SendSpiWord
-                0x00000090       0x16 ./SPI_SR.o
-                0x00000090                SendSpiWord
- .text.SendSpi  0x000000a6        0xe ./SPI_SR.o
-                0x000000a6                SendSpi
- .text.InitSpi  0x000000b4        0xe ./SPI_SR.o
-                0x000000b4                InitSpi
  .text.TLC5940_Init
-                0x000000c2       0x46 ./TLC5940.o
-                0x000000c2                TLC5940_Init
+                0x00000090       0x46 ./TLC5940.o
+                0x00000090                TLC5940_Init
  .text.TLC5940_ClockInDC
-                0x00000108       0x22 ./TLC5940.o
-                0x00000108                TLC5940_ClockInDC
+                0x000000d6       0x22 ./TLC5940.o
+                0x000000d6                TLC5940_ClockInDC
  .text.TLC5940_SetGS_And_GS_PWM
-                0x0000012a       0x5c ./TLC5940.o
-                0x0000012a                TLC5940_SetGS_And_GS_PWM
+                0x000000f8       0x5c ./TLC5940.o
+                0x000000f8                TLC5940_SetGS_And_GS_PWM
  .text.TLC5940_SetAllGS
-                0x00000186       0x36 ./TLC5940.o
-                0x00000186                TLC5940_SetAllGS
+                0x00000154       0x36 ./TLC5940.o
+                0x00000154                TLC5940_SetAllGS
  .text.TLC5940_SetAllDC
-                0x000001bc       0x56 ./TLC5940.o
-                0x000001bc                TLC5940_SetAllDC
+                0x0000018a       0x56 ./TLC5940.o
+                0x0000018a                TLC5940_SetAllDC
  .text.TLC5940_SetGS
-                0x00000212       0x48 ./TLC5940.o
-                0x00000212                TLC5940_SetGS
+                0x000001e0       0x48 ./TLC5940.o
+                0x000001e0                TLC5940_SetGS
  .text.TLC5940_SetDC
-                0x0000025a       0x84 ./TLC5940.o
-                0x0000025a                TLC5940_SetDC
+                0x00000228       0x84 ./TLC5940.o
+                0x00000228                TLC5940_SetDC
  .text.__vector_14
-                0x000002de       0x82 ./TLC5940.o
-                0x000002de                __vector_14
+                0x000002ac       0x82 ./TLC5940.o
+                0x000002ac                __vector_14
  .text.USART_Init
-                0x00000360       0x16 ./UART.o
-                0x00000360                USART_Init
+                0x0000032e       0x16 ./UART.o
+                0x0000032e                USART_Init
  .text.USART_Transmit
-                0x00000376        0xe ./UART.o
-                0x00000376                USART_Transmit
+                0x00000344        0xe ./UART.o
+                0x00000344                USART_Transmit
  .text.USART_Receive
-                0x00000384        0xe ./UART.o
-                0x00000384                USART_Receive
- .text.apply    0x00000392       0x72 ./main.o
-                0x00000392                apply
+                0x00000352        0xe ./UART.o
+                0x00000352                USART_Receive
+ .text.apply    0x00000360      0x1ca ./main.o
+                0x00000360                apply
  .text.startup.main
-                0x00000404      0x152 ./main.o
-                0x00000404                main
+                0x0000052a      0x23e ./main.o
+                0x0000052a                main
  .text.libgcc.mul
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.div
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc   0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.prologue
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.builtins
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fmul
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
-                0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
-                0x00000556                . = ALIGN (0x2)
+                0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_clear_bss.o)
+                0x00000768                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000556        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
-                0x00000556                exit
-                0x00000556                _exit
+ .fini9         0x00000768        0x0 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+                0x00000768                exit
+                0x00000768                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -310,15 +301,14 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000556        0x4 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
+ .fini0         0x00000768        0x4 /usr/lib/gcc/avr/4.8.1/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x0000055a                _etext = .
+                0x0000076c                _etext = .
 
-.data           0x00800100        0x0 load address 0x0000055a
+.data           0x00800100        0x0 load address 0x0000076c
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr5/crtm328p.o
- .data          0x00800100        0x0 ./SPI_SR.o
  .data          0x00800100        0x0 ./TLC5940.o
  .data          0x00800100        0x0 ./UART.o
  .data          0x00800100        0x0 ./main.o
@@ -336,7 +326,6 @@ END GROUP
                 0x00800100                PROVIDE (__bss_start, .)
  *(.bss)
  .bss           0x00800100        0x0 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr5/crtm328p.o
- .bss           0x00800100        0x0 ./SPI_SR.o
  .bss           0x00800100        0x0 ./TLC5940.o
  .bss           0x00800100        0x0 ./UART.o
  .bss           0x00800100        0x0 ./main.o
@@ -351,8 +340,8 @@ END GROUP
                 0x00800102                dcData
                 0x0080010e                gsData
                 0x00800126                PROVIDE (__bss_end, .)
-                0x0000055a                __data_load_start = LOADADDR (.data)
-                0x0000055a                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000076c                __data_load_start = LOADADDR (.data)
+                0x0000076c                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800126        0x0
                 0x00800126                PROVIDE (__noinit_start, .)
@@ -400,9 +389,8 @@ END GROUP
 
 .comment        0x00000000       0x11
  *(.comment)
- .comment       0x00000000       0x11 ./SPI_SR.o
+ .comment       0x00000000       0x11 ./TLC5940.o
                                  0x12 (size before relaxing)
- .comment       0x00000000       0x12 ./TLC5940.o
  .comment       0x00000000       0x12 ./UART.o
  .comment       0x00000000       0x12 ./main.o
 
