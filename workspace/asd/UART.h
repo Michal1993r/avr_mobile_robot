@@ -18,6 +18,10 @@
 void USART_Init( unsigned int );
 void USART_Transmit( unsigned char );
 unsigned char USART_Receive( void );
+void USART_TransmitString( char* );
+void USART_ClearTerminal();
+void USART_CursorPosition( int, int);
+void USART_ForegroundColor( char* );
 
 
 

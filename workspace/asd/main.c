@@ -8,8 +8,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdio.h>
 #include "UART.h"
 #include "TLC5940.h"
+
+
+#define DefaultVelocity 2500 // Default velocity 0 - 4095
 
 // macros defining output states
 
@@ -57,12 +61,14 @@
 				TLC5940_SetGS(14, velocity); \
 				TLC5940_SetGSUpdateFlag();
 
-#define breaks	while(gsUpdateFlag); \
+#define breaks( velocity ) 	while(gsUpdateFlag); \
 				TLC5940_SetAllGS(3500); \
+				velocity = DefaultVelocity; \
 				TLC5940_SetGSUpdateFlag();
 
-#define coast	while(gsUpdateFlag); \
+#define coast( velocity )	while(gsUpdateFlag); \
 				TLC5940_SetAllGS(0); \
+				velocity = DefaultVelocity; \
 				TLC5940_SetGSUpdateFlag();
 
 
@@ -81,17 +87,23 @@ int main (void) {
 	TLC5940_SetGSUpdateFlag();
 
 	int a;
-	int b = 2500;				// 	Set default velocity ( 0 - 4095 )
+	int b = DefaultVelocity;	// 	Set velocity to default
 	char direction;				//	Support variable for the "apply" function,
 	int* c = &b;				// 	Pointer used for changing velocity inside main loop
+
+	float per;					// 	Velocity percentage
+	int d1, d2;
+	double f2;
+
+	char temp[30];				//  Temporary variable needed to use sprintf()
 
 	while (1)					// main loop
 	{
 
 		a = USART_Receive();	// Receive bluetooth instruction
 
-		switch ( a )
-		{
+		switch ( a ){
+
 		case 0x41:				// "A" - forward
 
 				forward( *c );
@@ -136,21 +148,42 @@ int main (void) {
 
 		case 0x63:				// "c" - breaks
 
-			breaks;
+			breaks( *c );
 
 			break;
 
 		default:				// any other
 
-			coast;
+			coast( *c );
 
 			break ;
 		}
 
+// Terminal management
 
+		USART_ClearTerminal();
 
-		USART_Transmit(a);
+		per = (float)b / 4095 * 100;
 
+		d1 = per;
+		f2 = per - d1;
+		d2 = trunc(f2*10000);
+
+		if (d2 > 5000) d1++;
+
+		USART_CursorPosition(17, 31);
+
+		USART_ForegroundColor( "BLUE" );
+
+		USART_TransmitString( "--==Mobile Robot by MiCkl==--");
+
+		USART_ForegroundColor( "WHITE" );
+
+		sprintf( temp, "Velocity: %d%%", d1 );
+
+		USART_CursorPosition(19, 37);
+
+		USART_TransmitString( temp );
 
 	}
 
@@ -192,8 +225,9 @@ void apply( char c, int* p ){
 		default :
 
 				if ( *p > 4095 ) *p = 4095;
-				coast;
+				coast( *p );
 	}
 
 
 }
+

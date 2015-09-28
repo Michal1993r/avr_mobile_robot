@@ -33,3 +33,87 @@ while ( !(UCSR0A & (1<<RXC0)) );
 /* Get and return received data from buffer */
 return UDR0;
 }
+
+void USART_ForegroundColor( char *s ){
+
+	if ( s == "BLACK"){
+
+			USART_Transmit( 0x1B );
+			USART_TransmitString("[30m");
+
+	}
+
+	if ( s == "RED"){
+
+			USART_Transmit( 0x1B );
+			USART_TransmitString("[31m");
+
+	}
+
+	if ( s == "GREEN"){
+
+				USART_Transmit( 0x1B );
+				USART_TransmitString("[32m");
+
+		}
+
+	if ( s == "YELLOW"){
+
+				USART_Transmit( 0x1B );
+				USART_TransmitString("[33m");
+
+		}
+
+	if ( s == "BLUE"){
+
+				USART_Transmit( 0x1B );
+				USART_TransmitString("[34m");
+
+		}
+
+	if ( s == "MAGNETA"){
+
+				USART_Transmit( 0x1B );
+				USART_TransmitString("[35m");
+
+		}
+
+	if ( s == "CYAN"){
+
+				USART_Transmit( 0x1B );
+				USART_TransmitString("[36m");
+
+		}
+
+	if ( s == "WHITE"){
+
+				USART_Transmit( 0x1B );
+				USART_TransmitString("[37m");
+
+		}
+
+}
+
+void USART_TransmitString( char* s ){
+
+	while( *s ) USART_Transmit( *s++ );
+
+}
+
+void USART_ClearTerminal(){
+
+	USART_Transmit( 0x1B );				// <Esc>
+	USART_TransmitString( "[2J");
+	USART_Transmit( 0x1B );
+	USART_TransmitString( "[H");		// Cursor to home
+
+}
+
+void USART_CursorPosition( int r, int c){
+
+	char temp[20];
+	USART_Transmit( 0x1B );				// <Esc>
+	sprintf(temp, "[%d;%df", r, c);
+	USART_TransmitString( temp );
+
+}
