@@ -13,7 +13,7 @@
 #include "TLC5940.h"
 
 
-#define DefaultVelocity 2500 // Default velocity 0 - 4095
+#define DefaultVelocity 3100 // Default velocity 0 - 4095
 
 // macros defining output states
 

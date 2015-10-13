@@ -791,8 +791,8 @@ Disassembly of section .text:
      688:	80 e0       	ldi	r24, 0x00	; 0
      68a:	90 e0       	ldi	r25, 0x00	; 0
      68c:	0e 94 b5 00 	call	0x16a	; 0x16a <TLC5940_SetAllGS>
-     690:	84 ec       	ldi	r24, 0xC4	; 196
-     692:	99 e0       	ldi	r25, 0x09	; 9
+     690:	8c e1       	ldi	r24, 0x1C	; 28
+     692:	9c e0       	ldi	r25, 0x0C	; 12
      694:	99 83       	std	Y+1, r25	; 0x01
      696:	88 83       	st	Y, r24
      698:	81 e0       	ldi	r24, 0x01	; 1
@@ -825,13 +825,13 @@ Disassembly of section .text:
      6d4:	fc cf       	rjmp	.-8      	; 0x6ce <main+0x2a>
      6d6:	81 e0       	ldi	r24, 0x01	; 1
      6d8:	80 93 95 01 	sts	0x0195, r24
-     6dc:	84 ec       	ldi	r24, 0xC4	; 196
-     6de:	99 e0       	ldi	r25, 0x09	; 9
+     6dc:	8c e1       	ldi	r24, 0x1C	; 28
+     6de:	9c e0       	ldi	r25, 0x0C	; 12
      6e0:	98 a3       	std	Y+32, r25	; 0x20
      6e2:	8f 8f       	std	Y+31, r24	; 0x1f
-     6e4:	84 ec       	ldi	r24, 0xC4	; 196
+     6e4:	8c e1       	ldi	r24, 0x1C	; 28
      6e6:	88 2e       	mov	r8, r24
-     6e8:	89 e0       	ldi	r24, 0x09	; 9
+     6e8:	8c e0       	ldi	r24, 0x0C	; 12
      6ea:	98 2e       	mov	r9, r24
      6ec:	94 e8       	ldi	r25, 0x84	; 132
      6ee:	29 2e       	mov	r2, r25
